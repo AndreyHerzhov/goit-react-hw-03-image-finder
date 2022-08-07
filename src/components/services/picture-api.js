@@ -13,13 +13,16 @@ export default class PhotoApiService {
        
         const url = `${BASE_URL}?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=12&page=${this.page}`;
         return fetch(url)
-                .then(response =>  response.json())
-                .then((data) => {
+                .then(response => {
+                    if (response.ok) {
                     this.page += 1 
-                    return data
-        })
-    }
-    
+                    return response.json();
+                    }
+                
+                    return Promise.reject(new Error(`Нет покемона с именем ${this.searchQuery}`));
+                });
+            }
+  
     resetPage() {
         this.page = 1 
     }

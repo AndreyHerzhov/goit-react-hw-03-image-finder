@@ -3,15 +3,19 @@ import { ImageGaleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 
  
 
-export const ImageGalery = ({pictures}) => {
+export const ImageGalery = ({pictures, onClick, showLargeImg}) => {
     return (
-        <ImageGalleryList> 
+        <ImageGalleryList onClick={onClick}> 
            {pictures.map(el => {
             return (
             <ImageGaleryItem 
+                      id={el.id}
                       picture={el.webformatURL} 
                       desciption={el.tags} 
-                      key={el.id}/>
+                      key={el.id}
+                      showLargeImg={showLargeImg}
+                      />
+
           )})}
         </ImageGalleryList>
     );

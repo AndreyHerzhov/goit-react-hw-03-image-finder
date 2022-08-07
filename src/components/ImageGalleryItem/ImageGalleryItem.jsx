@@ -1,9 +1,9 @@
 import { ListItem, ListItemImage } from "./ImageGalleryItem.styled"
 
-export const ImageGaleryItem = ( {picture, desciption, id}) => {
+export const ImageGaleryItem = ( {picture, desciption, id, showLargeImg}) => {
     return (
         <ListItem> 
-            <ListItemImage key={id} src={picture} alt={desciption} />
+            <ListItemImage id={id} src={picture} alt={desciption} onClick={showLargeImg}/>
         </ListItem>
     );
   };
