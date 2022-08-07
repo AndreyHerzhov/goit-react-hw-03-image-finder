@@ -9,20 +9,21 @@ export default class SearchBar extends Component {
     };
   
     handleInputChange = event => {
-       
-      this.setState({ inputValue: event.currentTarget.value.toLowerCase() });
+      this.setState({ 
+        inputValue: event.currentTarget.value.toLowerCase() 
+      });
     };
   
     handleSubmit = event => {
       event.preventDefault();
       if (this.state.inputValue.trim() === '') {
-       alert('Write at least something please')
+        alert('Write at least something please')
         return;
       }
-      
-  
       this.props.onSubmit(this.state.inputValue)
-      this.setState({ inputValue: '' });
+      this.setState({ 
+        inputValue: '' 
+      });
     };
   
     render() {
@@ -31,12 +32,12 @@ export default class SearchBar extends Component {
        
                 <SearchForm onSubmit={this.handleSubmit}>
                     <SearchFormInput
-                    type="text"
-                    autocomplete="off"
-                    autoFocus
-                    value={this.state.inputValue}
-                    onChange={this.handleInputChange}
-                    placeholder="Search images and photos"
+                      type="text"
+                      autocomplete="off"
+                      autoFocus
+                      value={this.state.inputValue}
+                      onChange={this.handleInputChange}
+                      placeholder="Search images and photos"
                     />
                    
                     <SearchFormButton type="submit">
