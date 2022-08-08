@@ -1,6 +1,6 @@
 import { ImageGalleryList } from "./ImageGallery.styled";
 import { ImageGaleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
-
+import PropTypes from "prop-types"
  
 
 export const ImageGalery = ({pictures, onClick, showLargeImg}) => {
@@ -22,4 +22,16 @@ export const ImageGalery = ({pictures, onClick, showLargeImg}) => {
   };
   
  
- 
+  ImageGalery.propTypes = {
+    pictures: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        tags: PropTypes.string.isRequired,
+        webformatURL: PropTypes.string.isRequired,
+      })
+    ),
+    onClick: PropTypes.func,
+    showLargeImg: PropTypes.func.isRequired,
+     
+  };
+  

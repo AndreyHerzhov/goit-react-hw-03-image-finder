@@ -1,4 +1,5 @@
 import { ListItem, ListItemImage } from "./ImageGalleryItem.styled"
+import PropTypes from "prop-types"
 
 export const ImageGaleryItem = ( {picture, desciption, id, showLargeImg}) => {
     return (
@@ -8,6 +9,12 @@ export const ImageGaleryItem = ( {picture, desciption, id, showLargeImg}) => {
     );
   };
   
+  ImageGaleryItem.propTypes = {
+        picture: PropTypes.string.isRequired,
+        desciption: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        showLargeImg: PropTypes.func,
+ };
  
 
 

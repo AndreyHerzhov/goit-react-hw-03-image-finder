@@ -3,6 +3,7 @@ import   SearchBar  from "./Searchbar/Searchbar";
 import PhotoApiService from "components/services/picture-api";
 import { ImageGalery } from "./ImageGallery/ImageGallery";
 import Modal from "./Modal/Modal";
+import { Button } from "./Button/Button";
 import Notiflix from 'notiflix';
 
 const photoApiService = new PhotoApiService()
@@ -12,18 +13,29 @@ export class App extends Component {
     inputValue: '',
     pictures: [],
     showModal: false,
-    src: ''
+    src: '',
+    page: 1
     
   }
 
  handleFormSubmit = inputValue => {
-    this.setState({inputValue: inputValue})
+  Notiflix.Loading.hourglass({
+    cssAnimation: true,
+    cssAnimationDuration: 3000,
+    svgSize: '150px',
+  });
+    this.setState({
+      inputValue: inputValue,
+      page: 1
+    })
+    photoApiService.page = 1
     photoApiService.query = inputValue
     photoApiService.fetchPhotos()
     .then(data => this.setState({
           pictures: data.hits
         }) 
     )
+    Notiflix.Loading.remove();
   }
 
   toggleModal = (e) => {
@@ -36,8 +48,8 @@ export class App extends Component {
     Notiflix.Loading.hourglass({
       
       cssAnimation: true,
-      cssAnimationDuration: 2000,
-      svgSize: '50px',
+      cssAnimationDuration: 3000,
+      svgSize: '150px',
     });
     const pictureId = Number(e.currentTarget.id)
     const imageToOpen = this.state.pictures 
@@ -49,6 +61,25 @@ export class App extends Component {
     }))
     Notiflix.Loading.remove();
   }
+  
+
+  loadMore = (e) => {
+    Notiflix.Loading.hourglass({
+      cssAnimation: true,
+      cssAnimationDuration: 3000,
+      svgSize: '150px',
+    });
+    this.setState(prevState => ({
+      page: prevState.page + 1
+    }))
+    photoApiService.page = this.state.page + 1
+    photoApiService.fetchPhotos()
+    .then(data => this.setState({
+          pictures: [...this.state.pictures,...data.hits]
+        }) 
+    )
+    Notiflix.Loading.remove();
+  }
  
   
   render() {
@@ -58,6 +89,7 @@ export class App extends Component {
       <div>
         <SearchBar onSubmit={this.handleFormSubmit}/>
         <ImageGalery pictures={pictures}  showLargeImg={this.handleClick}/> 
+        {this.state.pictures.length > 1 && <Button title="Load more" loadMore={this.loadMore}/>}
         {this.state.showModal && 
         <Modal 
             src={src} 
