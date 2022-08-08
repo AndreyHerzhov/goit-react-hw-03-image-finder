@@ -33,7 +33,12 @@ export class App extends Component {
   }
  
   handleClick = (e) => {
-    Notiflix.Loading.standard();
+    Notiflix.Loading.hourglass({
+      
+      cssAnimation: true,
+      cssAnimationDuration: 2000,
+      svgSize: '50px',
+    });
     const pictureId = Number(e.currentTarget.id)
     const imageToOpen = this.state.pictures 
     const img = imageToOpen.find(option => option.id === pictureId);
