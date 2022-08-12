@@ -28,10 +28,9 @@ export const ImageGalery = ({pictures, onClick, showLargeImg}) => {
         id: PropTypes.number.isRequired,
         tags: PropTypes.string.isRequired,
         webformatURL: PropTypes.string.isRequired,
+        largeImageURL: PropTypes.string.isRequired
       })
     ),
-    onClick: PropTypes.func,
-    showLargeImg: PropTypes.func.isRequired,
-     
+     showLargeImg: PropTypes.func.isRequired,
   };
   

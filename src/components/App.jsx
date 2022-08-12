@@ -5,19 +5,20 @@ import { ImageGalery } from "./ImageGallery/ImageGallery";
 import Modal from "./Modal/Modal";
 import { Button } from "./Button/Button";
 import Notiflix from 'notiflix';
+ 
 
 const photoApiService = new PhotoApiService()
 
 export class App extends Component {
+  static staticField = 'static field';
   state = {
     inputValue: '',
     pictures: [],
     showModal: false,
     src: '',
     page: 1
-    
   }
-
+ 
  handleFormSubmit = inputValue => {
   Notiflix.Loading.hourglass({
     cssAnimation: true,
@@ -26,17 +27,28 @@ export class App extends Component {
   });
     this.setState({
       inputValue: inputValue,
-      page: 1
+      page: 1,
+      pictures: []
+      
     })
-    photoApiService.page = 1
-    photoApiService.query = inputValue
-    photoApiService.fetchPhotos()
-    .then(data => this.setState({
-          pictures: data.hits
-        }) 
-    )
-    Notiflix.Loading.remove();
+   Notiflix.Loading.remove();
   }
+
+  componentDidUpdate = (prevProps, prevState) => {
+   if(prevState.page !== this.state.page || prevState.inputValue !== this.state.inputValue){
+    photoApiService.query = this.state.inputValue
+    photoApiService.page = this.state.page
+     photoApiService.fetchPhotos()
+    .then(data => this.setState({
+          pictures: [...this.state.pictures,...data.hits.flatMap(el => [
+            {id: el.id, webformatURL: el.webformatURL,
+               largeImageURL: el.largeImageURL,
+              tags: el.tags}])] 
+        }) 
+      )
+    } 
+  }
+  
 
   toggleModal = (e) => {
     this.setState(({showModal}) => ({
@@ -72,14 +84,11 @@ export class App extends Component {
     this.setState(prevState => ({
       page: prevState.page + 1
     }))
-    photoApiService.page = this.state.page + 1
-    photoApiService.fetchPhotos()
-    .then(data => this.setState({
-          pictures: [...this.state.pictures,...data.hits]
-        }) 
-    )
+    
     Notiflix.Loading.remove();
   }
+
+  
  
   
   render() {
@@ -88,7 +97,8 @@ export class App extends Component {
     return (
       <div>
         <SearchBar onSubmit={this.handleFormSubmit}/>
-        <ImageGalery pictures={pictures}  showLargeImg={this.handleClick}/> 
+        {this.state.pictures.length > 0 && 
+        <ImageGalery pictures={pictures}  showLargeImg={this.handleClick}/> }
         {this.state.pictures.length > 1 && <Button title="Load more" loadMore={this.loadMore}/>}
         {this.state.showModal && 
         <Modal 
@@ -96,10 +106,12 @@ export class App extends Component {
             alt='Alternative'
             onClose={this.toggleModal}
             />}
+             
         
       </div>
     )
   }
+  
 }
 
  
