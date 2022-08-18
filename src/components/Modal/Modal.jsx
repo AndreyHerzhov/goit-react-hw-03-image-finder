@@ -3,9 +3,21 @@ import { createPortal } from 'react-dom';
 import { Overlay, ModalCard, ModalImage } from './Modal.styled';
 import PropTypes from "prop-types"
 
+// Modal.propTypes = {
+//   src: PropTypes.string.isRequired,
+//   alt: PropTypes.string.isRequired,
+//   onClose: PropTypes.func,
+// };
+
 const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
+  static propTypes = {
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+    onClose: PropTypes.func,
+  };
+  
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -43,9 +55,3 @@ export default class Modal extends Component {
 }
 
   
-Modal.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  onClose: PropTypes.func,
- 
-};

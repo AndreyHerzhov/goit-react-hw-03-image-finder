@@ -10,7 +10,7 @@ import Notiflix from 'notiflix';
 const photoApiService = new PhotoApiService()
 
 export class App extends Component {
-  static staticField = 'static field';
+  
   state = {
     inputValue: '',
     pictures: [],
